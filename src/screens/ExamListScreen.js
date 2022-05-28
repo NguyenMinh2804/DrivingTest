@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,10 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import {COLORS} from '../constants/theme';
-import {getExams} from '../utils/database';
+import { COLORS } from '../constants/theme';
+import { getExams } from '../utils/database';
 
-const ExamListScreen = ({navigation}) => {
+const ExamListScreen = ({ navigation }) => {
   const [allExams, setAllExams] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -19,11 +19,9 @@ const ExamListScreen = ({navigation}) => {
     const Exams = await getExams();
     let tempExams = [];
     Exams.docs.forEach(async exam => {
-      tempExams.push({name: exam.id, ...exam.data()});
+      tempExams.push({ id: exam.id, ...exam.data() });
     });
     setAllExams([...tempExams]);
-    console.log(tempExams)    
-
     setRefreshing(false);
   };
 
@@ -49,19 +47,17 @@ const ExamListScreen = ({navigation}) => {
           elevation: 4,
           paddingHorizontal: 20,
         }}>
-        <Text style={{fontSize: 20, color: COLORS.black}}>Danh sách đề thi bằng lái A1</Text>
+        <Text style={{ fontSize: 20, color: COLORS.black }}>Danh sách đề thi bằng lái A1</Text>
       </View>
 
       {/* Quiz list */}
       <FlatList
         data={allExams}
-        onRefresh={getAllExams}
-        refreshing={refreshing}
         showsVerticalScrollIndicator={false}
         style={{
           paddingVertical: 20,
         }}
-        renderItem={({item: exam}) => (
+        renderItem={({ item: exam }) => (
           <View
             style={{
               padding: 20,
@@ -74,8 +70,8 @@ const ExamListScreen = ({navigation}) => {
               backgroundColor: COLORS.white,
               elevation: 2,
             }}>
-            <View style={{flex: 1, paddingRight: 10}}>
-              <Text style={{fontSize: 18, color: COLORS.black}}>
+            <View style={{ flex: 1, paddingRight: 10 }}>
+              <Text style={{ fontSize: 18, color: COLORS.black }}>
                 {exam.name}
               </Text>
             </View>
@@ -91,7 +87,7 @@ const ExamListScreen = ({navigation}) => {
                   examId: exam.id,
                 });
               }}>
-              <Text style={{color: COLORS.primary}}>Bắt đầu</Text>
+              <Text style={{ color: COLORS.primary }}>Bắt đầu</Text>
             </TouchableOpacity>
           </View>
         )}

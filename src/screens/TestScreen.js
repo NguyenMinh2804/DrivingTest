@@ -1,14 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   View,
   SafeAreaView,
-  StatusBar
+  StatusBar,
+  FlatList,
+  Image
 } from 'react-native';
-import {COLORS} from '../constants/theme';
+import { COLORS } from '../constants/theme';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { getDetailExam, getDetailQuestion } from '../utils/database';
+import RadioButtonRN from 'radio-buttons-react-native';
+import FormButton from '../components/shared/FormButton';
 
 const TestScreen = ({ navigation, route }) => {
+
+  const [currentExamId, setCurrentExamId] = useState(route.params.examId);
+  const [name, setName] = useState('');
+  const [questions, setQuestions] = useState([]);
+
+  const [correctCount, setCorrectCount] = useState(0);
+  const [incorrectCount, setIncorrectCount] = useState(0);
+  const [isResultModalVisible, setIsResultModalVisible] = useState(false);
+
+  const getExamAndQuestionDetails = async () => {
+    // Get Exam
+    let currentExam = (await getDetailExam(currentExamId)).data();
+
+    let tempQuestions = [];
+    if (currentExam.questions && currentExam.questions.length > 0) {
+      for (let index = 0; index < currentExam.questions.length; index++) {
+        let question = (await getDetailQuestion(currentExam.questions[index])).data();
+        tempQuestions.push(question);
+      }
+      setQuestions([...tempQuestions]);
+    }
+    setName(currentExam.name);
+  };
+
+  useEffect(() => {
+    getExamAndQuestionDetails();
+  }, []);
+
   return (
     <SafeAreaView
       style={{
@@ -26,15 +59,14 @@ const TestScreen = ({ navigation, route }) => {
           backgroundColor: COLORS.white,
           elevation: 4,
         }}>
-        {/* Back Icon */}
         <MaterialIcons
           name="arrow-back"
           size={24}
           onPress={() => navigation.goBack()}
         />
-        <Text style={{ fontSize: 16, marginLeft: 10 }}>Đề 1</Text>
+        <Text style={{ fontSize: 16, marginLeft: 10 }}>Thi lý thuyết bằng lái A1 - {name}</Text>
       </View>
-      {/* <FlatList
+      <FlatList
         data={questions}
         style={{
           flex: 1,
@@ -52,78 +84,36 @@ const TestScreen = ({ navigation, route }) => {
               borderRadius: 2,
             }}>
             <View style={{ padding: 20 }}>
-              <Text style={{ fontSize: 16 }}>
-                {index + 1}. {item.question}
+              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                Câu {index + 1}. {item.question}
               </Text>
-              {item.imageUrl != '' ? (
+              {item.imageUrl != '' && item.imageUrl ? (
                 <Image
                   source={{
                     uri: item.imageUrl,
                   }}
                   resizeMode={'contain'}
                   style={{
-                    width: '80%',
-                    height: 150,
+                    width: '100%',
+                    height: 300,
                     marginTop: 20,
-                    marginLeft: '10%',
                     borderRadius: 5,
                   }}
                 />
               ) : null}
             </View>
-            {item.allOptions.map((option, optionIndex) => {
-              return (
-                <TouchableOpacity
-                  key={optionIndex}
-                  style={{
-                    paddingVertical: 14,
-                    paddingHorizontal: 20,
-                    borderTopWidth: 1,
-                    borderColor: COLORS.border,
-                    backgroundColor: getOptionBgColor(item, option),
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                  }}
-                  onPress={() => {
-                    if (item.selectedOption) {
-                      return null;
-                    }
-                    if (option == item.correct_answer) {
-                      setCorrectCount(correctCount + 1);
-                    } else {
-                      setIncorrectCount(incorrectCount + 1);
-                    }
-
-                    let tempQuestions = [...questions];
-                    tempQuestions[index].selectedOption = option;
-                    setQuestions([...tempQuestions]);
-                  }}>
-                  <Text
-                    style={{
-                      width: 25,
-                      height: 25,
-                      padding: 2,
-                      borderWidth: 1,
-                      borderColor: COLORS.border,
-                      textAlign: 'center',
-                      marginRight: 16,
-                      borderRadius: 25,
-                      color: getOptionTextColor(item, option),
-                    }}>
-                    {optionIndex + 1}
-                  </Text>
-                  <Text style={{ color: getOptionTextColor(item, option) }}>
-                    {option}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
+            <RadioButtonRN
+              data={item.answers.map(function (answer) {
+                return { "label": answer };
+              })}
+              selectedBtn={(e) => console.log(e.label)}
+              activeColor={COLORS.secondary}
+            />
           </View>
         )}
         ListFooterComponent={() => (
           <FormButton
-            labelText="Submit"
+            labelText="Nộp bài"
             style={{ margin: 10 }}
             handleOnPress={() => {
               // Show Result modal
@@ -131,7 +121,7 @@ const TestScreen = ({ navigation, route }) => {
             }}
           />
         )}
-      /> */}
+      />
     </SafeAreaView>
   );
 };
