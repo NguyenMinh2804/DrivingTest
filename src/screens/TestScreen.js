@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   Text,
   View,
@@ -12,35 +13,59 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { getDetailExam, getDetailQuestion } from '../utils/database';
 import RadioButtonRN from 'radio-buttons-react-native';
 import FormButton from '../components/shared/FormButton';
+import ResultModal from '../components/shared/ResultModal';
 
 const TestScreen = ({ navigation, route }) => {
 
-  const [currentExamId, setCurrentExamId] = useState(route.params.examId);
+  const [currentExam, setCurrentExam] = useState(route.params.exam);
   const [name, setName] = useState('');
   const [questions, setQuestions] = useState([]);
-
-  const [correctCount, setCorrectCount] = useState(0);
-  const [incorrectCount, setIncorrectCount] = useState(0);
-  const [isResultModalVisible, setIsResultModalVisible] = useState(false);
+  const [timer, setTimer] = useState(1140);
+  const [answers, setAnswers] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isTimeOut, setIsTimeOut] = useState(false);
+  let timerRef = React.useRef(timer);
 
   const getExamAndQuestionDetails = async () => {
-    // Get Exam
-    let currentExam = (await getDetailExam(currentExamId)).data();
-
     let tempQuestions = [];
+    let tempAnwers = [];
+
     if (currentExam.questions && currentExam.questions.length > 0) {
       for (let index = 0; index < currentExam.questions.length; index++) {
-        let question = (await getDetailQuestion(currentExam.questions[index])).data();
+        let tempQuestion = await getDetailQuestion(currentExam.questions[index]);
+        let question = { id: tempQuestion.id, ...tempQuestion.data() };
         tempQuestions.push(question);
       }
       setQuestions([...tempQuestions]);
+
+      tempQuestions.forEach((question, index) => {
+        let tempAnswer;
+        tempAnswer = { id: index, answer: "" };
+        tempAnwers.push(tempAnswer);
+      })
+      setAnswers([...tempAnwers]);
     }
     setName(currentExam.name);
   };
 
-  useEffect(() => {
-    getExamAndQuestionDetails();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getExamAndQuestionDetails();
+
+      const timerId = setInterval(() => {
+        timerRef.current -= 1;
+        if (timerRef.current < 0) {
+          setIsTimeOut(true);
+          clearInterval(timerId);
+        } else {
+          setTimer(timerRef.current);
+        }
+      }, 1000);
+      return () => {
+        clearInterval(timerId);
+      };
+    }, [])
+  );
 
   return (
     <SafeAreaView
@@ -56,15 +81,19 @@ const TestScreen = ({ navigation, route }) => {
           justifyContent: 'space-between',
           paddingVertical: 10,
           paddingHorizontal: 20,
-          backgroundColor: COLORS.white,
+          backgroundColor: COLORS.primary,
           elevation: 4,
         }}>
         <MaterialIcons
+          color={COLORS.white}
           name="arrow-back"
           size={24}
           onPress={() => navigation.goBack()}
         />
-        <Text style={{ fontSize: 16, marginLeft: 10 }}>Thi lý thuyết bằng lái A1 - {name}</Text>
+        <Text style={{ fontSize: 16, marginLeft: 10, color: COLORS.white }}>
+          Thi lý thuyết bằng lái A1 - {name} {"\n"}
+          Thời gian còn lại: {Math.floor(timer / 60)}' {Math.floor(timer % 60)}s
+        </Text>
       </View>
       <FlatList
         data={questions}
@@ -73,7 +102,7 @@ const TestScreen = ({ navigation, route }) => {
           backgroundColor: COLORS.background,
         }}
         showsVerticalScrollIndicator={false}
-        keyExtractor={item => item.question}
+        keyExtractor={(item, index) => index}
         renderItem={({ item, index }) => (
           <View
             style={{
@@ -85,7 +114,7 @@ const TestScreen = ({ navigation, route }) => {
             }}>
             <View style={{ padding: 20 }}>
               <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                Câu {index + 1}. {item.question}
+                Câu {index + 1}.  {item.question}
               </Text>
               {item.imageUrl != '' && item.imageUrl ? (
                 <Image
@@ -106,7 +135,13 @@ const TestScreen = ({ navigation, route }) => {
               data={item.answers.map(function (answer) {
                 return { "label": answer };
               })}
-              selectedBtn={(e) => console.log(e.label)}
+              selectedBtn={
+                (e) => {
+                  let tempAnwers = [...answers];
+                  tempAnwers[index].answer = e.label;
+                  setAnswers(tempAnwers);
+                }
+              }
               activeColor={COLORS.secondary}
             />
           </View>
@@ -116,11 +151,40 @@ const TestScreen = ({ navigation, route }) => {
             labelText="Nộp bài"
             style={{ margin: 10 }}
             handleOnPress={() => {
-              // Show Result modal
-              setIsResultModalVisible(true);
+              setIsModalVisible(true);
             }}
           />
         )}
+      />
+      <ResultModal
+        isModalVisible={isModalVisible}
+        isTimeOut={false}
+        handleOnClose={() => {
+          setIsModalVisible(false);
+        }}
+        handleResult={() => {
+          navigation.navigate('ResultScreen', {
+            exam: currentExam,
+            questions: questions,
+            answers: answers
+          });
+          setIsModalVisible(false);
+        }}
+      />
+      <ResultModal
+        isModalVisible={isTimeOut}
+        isTimeOut={true}
+        handleOnClose={() => {
+          setIsTimeOut(false);
+        }}
+        handleResult={() => {
+          navigation.navigate('ResultScreen', {
+            exam: currentExam,
+            questions: questions,
+            answers: answers
+          });
+          setIsTimeOut(false);
+        }}
       />
     </SafeAreaView>
   );

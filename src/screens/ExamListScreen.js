@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { COLORS } from '../constants/theme';
 import { getExams } from '../utils/database';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const ExamListScreen = ({ navigation }) => {
   const [allExams, setAllExams] = useState([]);
@@ -33,7 +34,7 @@ const ExamListScreen = ({ navigation }) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: COLORS.background,
+        backgroundColor: COLORS.primary + '20',
         position: 'relative',
       }}>
       <StatusBar backgroundColor={COLORS.white} barStyle={'dark-content'} />
@@ -43,11 +44,18 @@ const ExamListScreen = ({ navigation }) => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
-          backgroundColor: COLORS.white,
+          backgroundColor: COLORS.primary,
           elevation: 4,
+          paddingVertical: 10,
           paddingHorizontal: 20,
         }}>
-        <Text style={{ fontSize: 20, color: COLORS.black }}>Danh sách đề thi bằng lái A1</Text>
+        <MaterialIcons
+          color={COLORS.white}
+          name="arrow-back"
+          size={24}
+          onPress={() => navigation.goBack()}
+        />
+        <Text style={{ fontSize: 18, color: COLORS.white }}>Danh sách đề A1</Text>
       </View>
 
       {/* Quiz list */}
@@ -74,6 +82,9 @@ const ExamListScreen = ({ navigation }) => {
               <Text style={{ fontSize: 18, color: COLORS.black }}>
                 {exam.name}
               </Text>
+              <Text style={{ fontSize: 14, color: COLORS.black }}>
+                25 câu - 19 phút
+              </Text>
             </View>
             <TouchableOpacity
               style={{
@@ -84,7 +95,7 @@ const ExamListScreen = ({ navigation }) => {
               }}
               onPress={() => {
                 navigation.navigate('TestScreen', {
-                  examId: exam.id,
+                  exam: exam,
                 });
               }}>
               <Text style={{ color: COLORS.primary }}>Bắt đầu</Text>

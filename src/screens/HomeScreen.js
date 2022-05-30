@@ -10,7 +10,7 @@ import { COLORS } from '../constants/theme';
 
 const HomeScreen = ({ navigation }) => {
   return (
-    <SafeAreaView >
+    <SafeAreaView>
       <View style={{marginTop: 200}}>
       <Button
         onPress={() => navigation.navigate('ExamListScreen')}
@@ -22,13 +22,6 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20
-  }
-});
 
 export default HomeScreen;
 
