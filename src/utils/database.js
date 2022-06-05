@@ -11,3 +11,7 @@ export const getDetailExam = (examId) => {
 export const getDetailQuestion = (questionId) => {
   return firestore().collection('questions').doc(questionId).get();
 };
+
+export const getAllQuestions = () => {
+  return firestore().collection('questions').get();
+};

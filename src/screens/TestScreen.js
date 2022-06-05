@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { COLORS } from '../constants/theme';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { getDetailExam, getDetailQuestion } from '../utils/database';
+import {getDetailQuestion, getAllQuestions } from '../utils/database';
 import RadioButtonRN from 'radio-buttons-react-native';
 import FormButton from '../components/shared/FormButton';
 import ResultModal from '../components/shared/ResultModal';
@@ -29,7 +29,6 @@ const TestScreen = ({ navigation, route }) => {
   const getExamAndQuestionDetails = async () => {
     let tempQuestions = [];
     let tempAnwers = [];
-
     if (currentExam.questions && currentExam.questions.length > 0) {
       for (let index = 0; index < currentExam.questions.length; index++) {
         let tempQuestion = await getDetailQuestion(currentExam.questions[index]);
@@ -37,15 +36,23 @@ const TestScreen = ({ navigation, route }) => {
         tempQuestions.push(question);
       }
       setQuestions([...tempQuestions]);
-
-      tempQuestions.forEach((question, index) => {
-        let tempAnswer;
-        tempAnswer = { id: index, answer: "" };
-        tempAnwers.push(tempAnswer);
-      })
-      setAnswers([...tempAnwers]);
+      setName(currentExam.name);
+    } else {
+      const questions = await getAllQuestions();
+      questions.docs.forEach(async question => {
+        if (question.data().isImportant) {
+          tempQuestions.push({ id: question.id, ...question.data() });
+        }
+      });
+      setQuestions([...tempQuestions]);
+      setName("20 câu liệt");
     }
-    setName(currentExam.name);
+    tempQuestions.forEach((question, index) => {
+      let tempAnswer;
+      tempAnswer = { id: index, answer: "" };
+      tempAnwers.push(tempAnswer);
+    })
+    setAnswers([...tempAnwers]);
   };
 
   useFocusEffect(
@@ -116,10 +123,10 @@ const TestScreen = ({ navigation, route }) => {
               <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
                 Câu {index + 1}.  {item.question}
               </Text>
-              {item.imageUrl != '' && item.imageUrl ? (
+              {item.imgUrl != '' && item.imgUrl ? (
                 <Image
                   source={{
-                    uri: item.imageUrl,
+                    uri: item.imgUrl,
                   }}
                   resizeMode={'contain'}
                   style={{
@@ -140,6 +147,8 @@ const TestScreen = ({ navigation, route }) => {
                   let tempAnwers = [...answers];
                   tempAnwers[index].answer = e.label;
                   setAnswers(tempAnwers);
+                  // answers[index].answer = e.label;
+                  // setAnswers([...answers]);
                 }
               }
               activeColor={COLORS.secondary}
@@ -166,7 +175,8 @@ const TestScreen = ({ navigation, route }) => {
           navigation.navigate('ResultScreen', {
             exam: currentExam,
             questions: questions,
-            answers: answers
+            answers: answers,
+            timer: timer
           });
           setIsModalVisible(false);
         }}
@@ -181,7 +191,8 @@ const TestScreen = ({ navigation, route }) => {
           navigation.navigate('ResultScreen', {
             exam: currentExam,
             questions: questions,
-            answers: answers
+            answers: answers,
+            timer: timer
           });
           setIsTimeOut(false);
         }}
