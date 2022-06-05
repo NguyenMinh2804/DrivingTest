@@ -56,6 +56,7 @@ return (
         elevation: 4,
         paddingVertical: 10,
         paddingHorizontal: 20,
+        marginBottom: 10
       }}>
       <MaterialIcons
         color={COLORS.white}

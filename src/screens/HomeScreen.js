@@ -61,20 +61,17 @@ const HomeScreen = ({ navigation }) => {
             height: 80,
             backgroundColor: COLORS.primary,
             borderRadius: 5,
-            marginRight: 10
           }}
-          onPress={() => {
-            console.log("!");
-            navigation.navigate('QuestionListScreen')
-          }
-          }>
+          onPress={() => navigation.navigate('TestScreen', {
+            exam: "20cauliet",
+          })}>
           <Text
             style={{
               textAlign: 'center',
               color: COLORS.white,
               fontSize: 15,
             }}>
-            Ôn tập 200 câu lý thuyết
+            Ôn tập 20 câu liệt
           </Text>
         </TouchableOpacity>
       </View>
@@ -93,7 +90,7 @@ const HomeScreen = ({ navigation }) => {
             marginRight: 35
           }}
           onPress={() => navigation.navigate('TestScreen', {
-            exam: "20cauliet",
+            exam: "ngaunhien",
           })}>
           <Text
             style={{
@@ -101,7 +98,7 @@ const HomeScreen = ({ navigation }) => {
               color: COLORS.white,
               fontSize: 15,
             }}>
-            Ôn tập 20 câu liệt
+            Đề ngẫu nhiên
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -113,16 +110,19 @@ const HomeScreen = ({ navigation }) => {
             height: 80,
             backgroundColor: COLORS.primary,
             borderRadius: 5,
-            marginRight: 10
           }}
-          onPress={() => navigation.navigate('ExamListScreen')}>
+          onPress={() => {
+            console.log("!");
+            navigation.navigate('QuestionListScreen')
+          }
+          }>
           <Text
             style={{
               textAlign: 'center',
               color: COLORS.white,
               fontSize: 15,
             }}>
-            Mẹo thi kết quả cao
+            Ôn tập 200 câu lý thuyết
           </Text>
         </TouchableOpacity>
       </View>

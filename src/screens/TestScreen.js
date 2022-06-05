@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { COLORS } from '../constants/theme';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {getDetailQuestion, getAllQuestions } from '../utils/database';
+import { getDetailQuestion, getAllQuestions } from '../utils/database';
 import RadioButtonRN from 'radio-buttons-react-native';
 import FormButton from '../components/shared/FormButton';
 import ResultModal from '../components/shared/ResultModal';
@@ -27,17 +27,17 @@ const TestScreen = ({ navigation, route }) => {
   let timerRef = React.useRef(timer);
 
   const shuffle = (array) => {
-    let currentIndex = array.length,  randomIndex;
-  
+    let currentIndex = array.length, randomIndex;
+
     while (currentIndex != 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
+      randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
-        [array[currentIndex], array[randomIndex]] = [
+      [array[currentIndex], array[randomIndex]] = [
         array[randomIndex], array[currentIndex]];
     }
     return array;
   }
-  
+
   const getExamAndQuestionDetails = async () => {
     let tempQuestions = [];
     let tempAnwers = [];
@@ -52,14 +52,24 @@ const TestScreen = ({ navigation, route }) => {
       setName(currentExam.name);
     } else {
       const questions = await getAllQuestions();
-      questions.docs.forEach(async question => {
-        if (question.data().isImportant) {
+      if (currentExam == "20cauliet") {
+        questions.docs.forEach(async question => {
+          if (question.data().isImportant) {
+            question.data().answers = shuffle(question.data().answers);
+            tempQuestions.push({ id: question.id, ...question.data() });
+          }
+        });
+        setQuestions([...shuffle(tempQuestions)]);
+        setName("20 câu liệt");
+      } else {
+        questions.docs.forEach(async question => {
           question.data().answers = shuffle(question.data().answers);
           tempQuestions.push({ id: question.id, ...question.data() });
-        }
-      });
-      setQuestions([...shuffle(tempQuestions)]);
-      setName("20 câu liệt");
+        });
+        setQuestions([...shuffle(tempQuestions).slice(0, 25)]);
+        setName("Đề ngẫu nhiên");
+      }
+
     }
     tempQuestions.forEach((question, index) => {
       let tempAnswer;
