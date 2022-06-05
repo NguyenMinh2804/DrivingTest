@@ -26,6 +26,18 @@ const TestScreen = ({ navigation, route }) => {
   const [isTimeOut, setIsTimeOut] = useState(false);
   let timerRef = React.useRef(timer);
 
+  const shuffle = (array) => {
+    let currentIndex = array.length,  randomIndex;
+  
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+    return array;
+  }
+  
   const getExamAndQuestionDetails = async () => {
     let tempQuestions = [];
     let tempAnwers = [];
@@ -33,18 +45,20 @@ const TestScreen = ({ navigation, route }) => {
       for (let index = 0; index < currentExam.questions.length; index++) {
         let tempQuestion = await getDetailQuestion(currentExam.questions[index]);
         let question = { id: tempQuestion.id, ...tempQuestion.data() };
+        question.answers = shuffle(question.answers);
         tempQuestions.push(question);
       }
-      setQuestions([...tempQuestions]);
+      setQuestions([...shuffle(tempQuestions)]);
       setName(currentExam.name);
     } else {
       const questions = await getAllQuestions();
       questions.docs.forEach(async question => {
         if (question.data().isImportant) {
+          question.data().answers = shuffle(question.data().answers);
           tempQuestions.push({ id: question.id, ...question.data() });
         }
       });
-      setQuestions([...tempQuestions]);
+      setQuestions([...shuffle(tempQuestions)]);
       setName("20 câu liệt");
     }
     tempQuestions.forEach((question, index) => {
