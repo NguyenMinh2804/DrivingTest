@@ -1,21 +1,17 @@
-# Chat Application
+# Ứng dụng luyện thi giấy phép lái xe máy
 
-Ứng dụng giúp bạn nhắn tin với người khác.
+Ứng dụng giúp bạn luyện thi giấy phép lái xe máy.
 
 ## Nội dung
 1. [Chức năng](#chức-năng)
    
-   1. [Đăng nhập, Đăng ký](#đăng-nhập-đăng-ký)
+   1. [Thi lý thuyết](#thi-lý-thuyết)
 
-   1. [Reset mật khẩu](#reset-mật-khẩu)
+   1. [Thi 20 câu liệt](#thi-20-câu-liệt)
    
-   1. [Tin nhắn](#tin-nhắn)
+   1. [Thi đề ngẫu nhiên](#thi-đề-ngẫu-nhiên)
    
-   1. [Danh sách người dùng](#danh-sách-người-dùng)
-   
-   1. [Thông tin cá nhân](#thông-tin-cá-nhân)
-   
-   1. [Chat](#chat)
+   1. [Ôn tập 200 câu lý thuyết](#ôn-tập-200-câu-lý-thuyết)
    
 1. [Yêu cầu thiết bị](#yêu-cầu-thiết-bị)
 
@@ -23,10 +19,9 @@
 
 1. [Tác giả](#tác-giả)
 
-1. [Giấy phép](#giấy-phép)
 
 ## Chức năng
-### Đăng nhập Đăng ký
+### Thi lý thuyết
    * Đăng nhập
    
    * Đăng ký
@@ -80,37 +75,20 @@
    
 ## Yêu cầu thiết bị
 -Android:
-
-   +Android studio : 4.0.1
    
-   +Gradle : 6.1.1
-   
-   +Min sdk : 16
+   +Min sdk : 21
 
-   +Target sdk : 30
+   +Target sdk : 31
 
 
 ## Thư viện và công nghệ
 
-- Language : Java
+- Language : JavaScript - React Native
 
 - Database: Firebase
 
 ## Tác giả
-Nguyễn Văn Minh - 1752057@gm.uit.edu.vn
+- Nguyễn Văn Minh - 1752057@gm.uit.edu.vn
 
-## Giấy phép
+- Nguyễn Duy Tân - 17521014@gm.uit.edu.vn
 
-    Copyright 2014
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
