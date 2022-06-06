@@ -22,56 +22,32 @@
 
 ## Chức năng
 ### Thi lý thuyết
-   * Đăng nhập
-   
-   * Đăng ký
+   * Thi theo những đề đã tạo sẵn. Mỗi lần thi câu hỏi đáp án sẽ được trộn thứ tự. Chấm điểm dựa theo yêu cầu của thi giấy phép lái xe máy A1 21/25 câu và không sai câu liệt.
    
    <p align="center">
-   <img src="screenshots/home.jpg" height = "480" width="270"> <img src="ChatApplication/screenshots/dangnhap.png" height = "480" width="270"> <img src="ChatApplication/screenshots/dangki.png" height = "480" width="270">
+   <img src="screenshots/home.jpg" height = "480" width="270"> <img src="screenshots/examList.jqg" height = "480" width="270"> <img src="screenshots/examTest.jpg" height = "480" width="270"> <img src="screenshots/result.jpg" height = "480" width="270">
    </p>
    
-### Reset mật khẩu
-   * Reset mật khẩu
+### Thi 20 câu liệt
+   * Do câu liệt có tính chất quan trọng không được sai. Do đó chức năng này giúp dường dùng có thể ôn tập những câu này chắc chắn hơn. Đề được tạo từ những câu liệt trong bộ câu hỏi
    
    <p align="center">
-   <img src="ChatApplication/screenshots/reset.png" height = "480" width="270">
+   <img src="screenshots/20cauliet.jpg" height = "480" width="270">
    </p>
    
-### Tin nhắn   
-   * Trạng thái hoạt động
-   
-   * Tin nhắn cuối cùng
+### Thi đề ngẫu nhiên   
+   * Ngoài ôn tập từ những đề đã được tạo sẵn. Đây là chức năng tạo ra những đề ngẫu nhiên dựa vào bộ câu hỏi và cấu trúc đề thi A1 giúp người dùng không bị giới hạn về số đề ôn
    
    <p align="center">
-   <img src="ChatApplication/screenshots/chat.png" height = "480" width="270">
-   
-### Danh sách người dùng
-   * Danh sách người dùng
-   
-   * Tìm kiếm người dung
-   
-   <p align="center">
-   <img src="ChatApplication/screenshots/user.png" height = "480" width="270">
-   </p>
-
-### Thông tin cá nhân
-   * Thông tin cá nhân
-   
-   * Đổi ảnh đại diện
-   
-   <p align="center">
-   <img src="ChatApplication/screenshots/profile.png" height = "480" width="270">
+   <img src="screenshots/ngaunhien.jpg" height = "480" width="270">
    </p>
    
-### Chat
-   * Chat
-   
-   * Trạng thái tin nhắn
+### Ôn tập 200 câu lý thuyết
+   * Đây là chức năng giúp người dùng tra cứu, học 200 câu hỏi lý của thi giấy phép lái xe A1
    
    <p align="center">
-   <img src="ChatApplication/screenshots/chatr.png" height = "480" width="270">
+   <img src="screenshots/200cau.jpg" height = "480" width="270">
    </p>
- 
    
 ## Yêu cầu thiết bị
 -Android:
