@@ -41,6 +41,7 @@ const TestScreen = ({ navigation, route }) => {
   const getExamAndQuestionDetails = async () => {
     let tempQuestions = [];
     let tempAnwers = [];
+    console.log(currentExam);
     if (currentExam.questions && currentExam.questions.length > 0) {
       for (let index = 0; index < currentExam.questions.length; index++) {
         let tempQuestion = await getDetailQuestion(currentExam.questions[index]);
@@ -51,6 +52,7 @@ const TestScreen = ({ navigation, route }) => {
       setQuestions([...shuffle(tempQuestions)]);
       setName(currentExam.name);
     } else {
+      console.log("ádasdasd");
       const questions = await getAllQuestions();
       if (currentExam == "20cauliet") {
         questions.docs.forEach(async question => {
