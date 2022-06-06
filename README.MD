@@ -25,7 +25,7 @@
    * Thi theo những đề đã tạo sẵn. Mỗi lần thi câu hỏi đáp án sẽ được trộn thứ tự. Chấm điểm dựa theo yêu cầu của thi giấy phép lái xe máy A1 21/25 câu và không sai câu liệt.
    
    <p align="center">
-   <img src="screenshots/home.jpg" height = "480" width="270"> <img src="screenshots/examList.jqg" height = "480" width="270"> <img src="screenshots/examTest.jpg" height = "480" width="270"> <img src="screenshots/result.jpg" height = "480" width="270">
+   <img src="screenshots/home.jpg" height = "480" width="270"> <img src="screenshots/examList.jpg" height = "480" width="270"> <img src="screenshots/examTest.jpg" height = "480" width="270"> <img src="screenshots/result.jpg" height = "480" width="270">
    </p>
    
 ### Thi 20 câu liệt
